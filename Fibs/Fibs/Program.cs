@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Fibs
 {
@@ -12,17 +13,20 @@ namespace Fibs
 
         static void Main(string[] args)
         {
+            PrintFibonacciNumbers(1000).Wait();
+        }
+
+        private static Task PrintFibonacciNumbers(int quantity)
+        {
             var fibGen = Observable.Generate(
-                initialState:   new Tuple<BigInteger, BigInteger>(0, 1),
-                condition:      _   => true,
-                iterate:        tup => new Tuple<BigInteger, BigInteger>(tup.Item2, tup.Item1 + tup.Item2),
-                resultSelector: tup => tup.Item2);
+                initialState:   new { OldN = (BigInteger) 0, N = (BigInteger) 1, Count = 1},
+                condition:      s => s.Count <= quantity,
+                iterate:        s => new { OldN = s.N, N = s.OldN + s.N, Count = s.Count + 1 },
+                resultSelector: s => s.N.ToString());
 
-            var tusenFibs = fibGen.Take(1000).Select(x => x.ToString());
+            fibGen.Subscribe(WriteLine);
 
-            tusenFibs.Subscribe(WriteLine);
-
-            tusenFibs.ToTask().Wait();
+            return fibGen.ToTask();
         }
     }
 }
