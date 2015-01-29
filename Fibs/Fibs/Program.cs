@@ -24,7 +24,7 @@ namespace Fibs
                 iterate:        s => new { OldN = s.N, N = s.OldN + s.N, Count = s.Count + 1 },
                 resultSelector: s => s.N.ToString());
 
-            fibGen.Subscribe(WriteLine);
+            fibGen.Do(WriteLine).Subscribe();
 
             return fibGen.ToTask();
         }
