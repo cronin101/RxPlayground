@@ -19,7 +19,7 @@ namespace Fibs
         private static Task PrintFibonacciNumbers(int quantity)
         {
             var fibGen = Observable.Generate(
-                initialState:   new { OldN = (BigInteger) 0, N = (BigInteger) 1, Count = 1},
+                initialState:   new { OldN = (BigInteger) 0, N = (BigInteger) 1, Count = 1 },
                 condition:      s => s.Count <= quantity,
                 iterate:        s => new { OldN = s.N, N = s.OldN + s.N, Count = s.Count + 1 },
                 resultSelector: s => s.N.ToString());
