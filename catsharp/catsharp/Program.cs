@@ -12,6 +12,7 @@ namespace catsharp
     {
         const string StdInFlag = "-";
 
+        /* The state is dead, long live the state. */
         static void Main(string[] args)
         {
             Using(OpenStandardOutput, stdOut => 
